@@ -108,7 +108,7 @@ module.exports = {
           globOptions: {
             ignore: [
               '**/index.html',// Ignore index.html since it's handled by HtmlWebpackPlugin
-              '**/design'
+              '**/design' 
             ], 
           },
         },
