@@ -1,0 +1,246 @@
+@use "vars" as *;
+
+
+$primary: #F75D81;
+$timer_card: #34364F;
+$text: #8A8BAA;
+
+$bkg_1: #241E2C;
+$bkg_2: #1E1E28;
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Ubuntu", sans-serif;
+    color: $text;
+}
+
+h1 {
+    font-size: 24px;
+    color: #fff;
+    margin: 0;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.25em;
+}
+
+#root {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(to top, $bkg_1 50%, $bkg_2);
+
+    #stars {
+        position: absolute;
+        inset: 0;
+        object-fit: cover;
+        pointer-events: none;
+    }
+
+    #bannerImage {
+        position: absolute;
+        pointer-events: none;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: auto;
+    }
+
+    .content {
+        display: grid;
+        height: 100%;
+        grid-template-rows: 1fr 1fr 1fr;
+
+        header {
+            @include flex-center;
+        }
+    }
+
+    footer {
+        @include flex-center;
+        gap: 32px;
+    }
+}
+
+$mask: url("./assets/images/skew.svg");
+$maks_revers: url("./assets/images/skew_reverse.svg");
+
+$skew_transform: 0.5s ease all;
+
+.card_item {
+    color: $primary;
+    font-size: 56px;
+    font-weight: 900;
+    width: 148px;
+    height: 140px;
+    position: relative;
+    text-align: center;
+    @include user-select-none;
+
+    &>.element {
+        width: 148px;
+        height: 70px;
+        position: absolute;
+        left: 0;
+        background-color: $timer_card;
+        display: flex;
+        justify-content: center;
+        transform-style: preserve-3d;
+        transition: $skew_transform;
+        overflow: hidden;
+    }
+
+    .top {
+        top: 0;
+        mask-image: $mask;
+        -webkit-mask-image: $mask;
+        -o-mask-image: $mask;
+        -moz-mask-image: $mask;
+        filter: brightness(0.8);
+        transform-origin: bottom center;
+
+        span {
+            transform: translateY(30px);
+        }
+
+        &.current {
+            transform: rotateX(90deg);
+            filter: brightness(0.5);
+
+            &.active {
+                transform: rotateX(0deg);
+                filter: brightness(0.8);
+            }
+        }
+    }
+
+    .bottom {
+        bottom: 0;
+        mask-image: $maks_revers;
+        -webkit-mask-image: $maks_revers;
+        -o-mask-image: $maks_revers;
+        -moz-mask-image: $maks_revers;
+        transform-origin: top center;
+
+        span {
+            transform: translateY(-40px);
+        }
+
+        &.next {
+            transform: rotateX(90deg);
+            filter: brightness(1.5);
+
+            &.active {
+                transform: rotateX(0deg);
+                filter: brightness(1);
+
+                &~.current {
+                    background-color: red;
+                }
+            }
+        }
+
+        &.overlay {
+            filter: brightness(0.5);
+        }
+    }
+
+    .sample {
+        @include flex-center;
+        height: 100%;
+        color: #ffffff30;
+        position: relative;
+    }
+}
+
+.timers {
+    display: flex;
+    gap: 32px;
+
+    &>.item {
+        text-align: center;
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+
+        .card {
+
+            position: relative;
+            margin-bottom: 28px;
+
+            &:before {
+                content: "";
+                position: absolute;
+                inset: 0;
+                border-radius: 8px;
+                display: flex;
+                background-color: #000;
+                transform: translateY(8px);
+                opacity: 0.33;
+            }
+        }
+    }
+}
+
+.social_icon {
+    font-size: 24px;
+    display: flex;
+    width: 1em;
+    height: 1em;
+    position: relative;
+    mask-size: 1em;
+    background: currentcolor;
+    color: $text;
+    transition: $transition;
+
+    &:hover {
+        color: $primary
+    }
+}
+
+@media (max-width:640px) {
+    #root{
+        #bannerImage{
+            width: auto;
+            left: unset;
+            right:-50%;
+            height: 192px;
+        }
+        footer{
+            align-items: flex-end;
+            padding-bottom: 48px;
+        }
+    }
+    .timers {
+        gap: 12px;
+        justify-content: center;
+    }
+
+    .card_item {
+        font-size: 24px;
+        width: 59px;
+        height: 55px;
+
+        &>.element {
+            width: 59px;
+            height: 28px;
+            mask-size: 60px 28px;
+        }
+
+        .top {
+            span {
+                transform: translateY(10px);
+            }
+        }
+
+        .bottom {
+            span {
+                transform: translateY(-16px);
+            }
+        }
+    }
+}
